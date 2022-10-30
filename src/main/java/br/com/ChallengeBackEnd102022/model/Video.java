@@ -1,5 +1,7 @@
 package br.com.ChallengeBackEnd102022.model;
 
+import java.util.Objects;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -13,6 +15,16 @@ public class Video {
 	private String title;
 	private String description;
 	private String url;
+	
+	public Video() {
+	}
+	
+	public Video(String title, String description, String url) {
+		this.title = title;
+		this.description = description;
+		this.url = url;
+	}
+	
 	public Long getId() {
 		return id;
 	}
@@ -37,6 +49,25 @@ public class Video {
 	public void setUrl(String url) {
 		this.url = url;
 	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(description, id, title, url);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Video other = (Video) obj;
+		return Objects.equals(description, other.description) && Objects.equals(title, other.title) && Objects.equals(url, other.url);
+	}
+	
+	
 	
 	
 }
