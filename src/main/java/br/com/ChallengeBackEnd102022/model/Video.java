@@ -6,53 +6,73 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 
 @Entity
 public class Video {
 
 	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	private String title;
-	private String description;
+	private String titulo;
+	private String descricao;
 	private String url;
+	
+	@ManyToOne
+	private Category categoria;
 	
 	public Video() {
 	}
 	
-	public Video(String title, String description, String url) {
-		this.title = title;
-		this.description = description;
+	public Video(String titulo, String descricao, String url, Category categoria) {
+		this.titulo = titulo;
+		this.descricao = descricao;
 		this.url = url;
+		this.categoria = categoria;
 	}
-	
+
 	public Long getId() {
 		return id;
 	}
+
 	public void setId(Long id) {
 		this.id = id;
 	}
-	public String getTitle() {
-		return title;
+
+	public String getTitulo() {
+		return titulo;
 	}
-	public void setTitle(String title) {
-		this.title = title;
+
+	public void setTitulo(String titulo) {
+		this.titulo = titulo;
 	}
-	public String getDescription() {
-		return description;
+
+	public String getDescricao() {
+		return descricao;
 	}
-	public void setDescription(String description) {
-		this.description = description;
+
+	public void setDescricao(String descricao) {
+		this.descricao = descricao;
 	}
+
 	public String getUrl() {
 		return url;
 	}
+
 	public void setUrl(String url) {
 		this.url = url;
 	}
 
+	public Category getCategoria() {
+		return categoria;
+	}
+
+	public void setCategoria(Category categoria) {
+		this.categoria = categoria;
+	}
+
 	@Override
 	public int hashCode() {
-		return Objects.hash(description, id, title, url);
+		return Objects.hash(categoria, descricao, titulo, url);
 	}
 
 	@Override
@@ -64,10 +84,9 @@ public class Video {
 		if (getClass() != obj.getClass())
 			return false;
 		Video other = (Video) obj;
-		return Objects.equals(description, other.description) && Objects.equals(title, other.title) && Objects.equals(url, other.url);
+		return Objects.equals(categoria, other.categoria) && Objects.equals(descricao, other.descricao)
+				&& Objects.equals(titulo, other.titulo) && Objects.equals(url, other.url);
 	}
-	
-	
 	
 	
 }

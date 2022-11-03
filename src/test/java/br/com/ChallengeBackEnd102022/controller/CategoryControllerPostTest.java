@@ -1,12 +1,16 @@
 package br.com.ChallengeBackEnd102022.controller;
 
+import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.net.URI;
-import java.util.List;
+import java.nio.charset.StandardCharsets;
 
+import org.junit.FixMethodOrder;
 import org.junit.Test;
+import org.junit.jupiter.api.Order;
 import org.junit.runner.RunWith;
+import org.junit.runners.MethodSorters;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -20,14 +24,14 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import br.com.ChallengeBackEnd102022.model.Video;
+import br.com.ChallengeBackEnd102022.model.Category;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
-public class VideoControllerTest {
-	
+public class CategoryControllerPostTest {
+
 	@Autowired
 	private MockMvc mockMvc;
 	
@@ -35,12 +39,15 @@ public class VideoControllerTest {
 	private ObjectMapper objectMapper;
 	
 	@Test
-	public void getAllMovies() throws Exception {
-		URI uri = new URI("/videos");
+	public void createCategory() throws Exception {
+		URI uri = new URI("/categorias");
+		String json = "{\"titulo\":\"teal\", \"cor\":\"20c997\"}";
+		
 		
 		MvcResult mvcResult = mockMvc
 		.perform(MockMvcRequestBuilders
-				.get(uri)
+				.post(uri)
+				.content(json)
 				.contentType(MediaType.APPLICATION_JSON))
 				.andExpect(MockMvcResultMatchers
 				.status()
@@ -48,44 +55,58 @@ public class VideoControllerTest {
 		.andReturn();
 
 		String responseBody = mvcResult.getResponse().getContentAsString();
-		Video[] videos = objectMapper.readValue(responseBody, Video[].class);
-		assertEquals(2, videos.length);
+		Category category = objectMapper.readValue(responseBody, Category.class);
+		Category expectedCategory = new Category("teal","20c997");
+		assertEquals(expectedCategory,category);
+		
 	}
 	
 	@Test
-	public void getFirstMovie() throws Exception {
-		URI uri = new URI("/videos/1");
+	public void invalidTitleCategory() throws Exception {
+		URI uri = new URI("/categorias");
+		String json = "{\"titulo\":\"\", \"cor\":\"20c997\"}";
+		
 		
 		MvcResult mvcResult = mockMvc
 		.perform(MockMvcRequestBuilders
-				.get(uri)
+				.post(uri)
+				.content(json)
 				.contentType(MediaType.APPLICATION_JSON))
 				.andExpect(MockMvcResultMatchers
 				.status()
-				.is(200))
+				.is(400))
 		.andReturn();
 
-		String responseBody = mvcResult.getResponse().getContentAsString();
-		Video video = objectMapper.readValue(responseBody, Video.class);
-		Video expectedVideo = new Video("Dad Battle - Friday Night Funkin OST",
-				"Composed by Kawai Sprite: https://twitter.com/kawaisprite From the game Friday Night Funkin Play the game on Newgrounds! ","https://www.youtube.com/watch?v=w0WyKTSuX4U");
-		assertEquals(expectedVideo,video);
+		String responseBody = mvcResult.getResponse().getContentAsString(StandardCharsets.UTF_8);
+		assertEquals("[{\"field\":\"titulo\",\"error\":\"O campo titulo é obrigatório.\"}]",responseBody);
+		
 		
 	}
 	
 	@Test
-	public void getInvalidId() throws Exception {
-		URI uri = new URI("/videos/42");
+	public void invalidColorCategory() throws Exception {
+		URI uri = new URI("/categorias");
+		String json = "{\"titulo\":\"teal\", \"cor\":\"\"}";
 		
-		mockMvc
+		
+		MvcResult mvcResult = mockMvc
 		.perform(MockMvcRequestBuilders
-				.get(uri)
+				.post(uri)
+				.content(json)
 				.contentType(MediaType.APPLICATION_JSON))
 				.andExpect(MockMvcResultMatchers
 				.status()
-				.is(404));
+				.is(400))
+		.andReturn();
 
-		
+		String responseBody = mvcResult.getResponse().getContentAsString(StandardCharsets.UTF_8);
+		assertTrue(responseBody.contains("{\"field\":\"cor\",\"error\":\"O campo cor deve ter estar no formato hexadecimal.\"}"));
+		assertTrue(responseBody.contains("{\"field\":\"cor\",\"error\":\"O campo cor é obrigatório.\"}"));
+			
 	}
+	
+
+	
+
 	
 }
