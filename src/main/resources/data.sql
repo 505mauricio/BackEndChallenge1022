@@ -21,5 +21,5 @@ Download: https://soundcloud.com/squaaashclub/s...', 'https://www.youtube.com/wa
 
 INSERT INTO VIDEO(titulo, descricao, url,categoria_id) VALUES('Childish Gambino - 3005 (Official Video)', 'because the internet, the new album from Childish Gambino', 'https://www.youtube.com/watch?v=tG35R8F2j8ks',1);
 
-
+INSERT INTO USERS(login,password) VALUES ('test','$2a$12$whRzfqiVZnQBEEnslA1tdegMklFZ64FxR131Oqvn7jKGo/GSDVJx.');
 

@@ -27,7 +27,7 @@ import br.com.ChallengeBackEnd102022.model.Category;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
-@AutoConfigureMockMvc
+@AutoConfigureMockMvc(addFilters = false)
 @ActiveProfiles("test")
 public class CategoryControllerPutTest {
 

@@ -1,4 +1,4 @@
-package br.com.ChallengeBackEnd102022.validation;
+package br.com.ChallengeBackEnd102022.CustomErrorHandlers;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -27,7 +27,7 @@ import br.com.ChallengeBackEnd102022.repository.CategoryRepository;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
-@AutoConfigureMockMvc
+@AutoConfigureMockMvc(addFilters = false)
 @ActiveProfiles("test")
 public class VideoControllerGetTest {
 	
