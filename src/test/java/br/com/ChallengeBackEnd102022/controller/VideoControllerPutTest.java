@@ -30,8 +30,8 @@ import br.com.ChallengeBackEnd102022.repository.CategoryRepository;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
-@AutoConfigureMockMvc(addFilters = false)
 @ActiveProfiles("test")
+@AutoConfigureMockMvc(addFilters = false)
 public class VideoControllerPutTest {
 	
 	@Autowired
@@ -185,8 +185,8 @@ public class VideoControllerPutTest {
 		.andReturn();
 
 		String responseBody = mvcResult.getResponse().getContentAsString(StandardCharsets.UTF_8);
-		assertTrue(responseBody.contains("{\"field\":\"titulo\",\"error\":\"O campo titulo é obrigatório.\"}"));
-		assertTrue(responseBody.contains("{\"field\":\"titulo\",\"error\":\"O campo titulo deve ter no mínimo 5 caracteres.\"}"));				
+		assertTrue(responseBody.contains("O campo titulo é obrigatório."));
+		assertTrue(responseBody.contains("O campo titulo deve ter no mínimo 5 caracteres."));				
 	}
 	
 	@Test
@@ -211,8 +211,8 @@ public class VideoControllerPutTest {
 		.andReturn();
 
 		String responseBody = mvcResult.getResponse().getContentAsString(StandardCharsets.UTF_8);
-		assertTrue(responseBody.contains("{\"field\":\"descricao\",\"error\":\"O campo descrição é obrigatório.\"}"));
-		assertTrue(responseBody.contains("{\"field\":\"descricao\",\"error\":\"O campo descrição deve ter no mínimo 10 caracteres.\"}"));				
+		assertTrue(responseBody.contains("O campo descrição é obrigatório."));
+		assertTrue(responseBody.contains("O campo descrição deve ter no mínimo 10 caracteres."));				
 	}
 	
 	@Test
@@ -237,8 +237,8 @@ public class VideoControllerPutTest {
 		.andReturn();
 
 		String responseBody = mvcResult.getResponse().getContentAsString(StandardCharsets.UTF_8);
-		assertTrue(responseBody.contains("{\"field\":\"url\",\"error\":\"O campo url é obrigatório.\"}"));
-		assertTrue(responseBody.contains("{\"field\":\"url\",\"error\":\"O campo url deve ter no mínimo 5 caracteres.\"}"));				
+		assertTrue(responseBody.contains("O campo url é obrigatório."));
+		assertTrue(responseBody.contains("O campo url deve ter no mínimo 5 caracteres."));				
 	}
 	
 	@Test
@@ -263,7 +263,7 @@ public class VideoControllerPutTest {
 		.andReturn();
 
 		String responseBody = mvcResult.getResponse().getContentAsString(StandardCharsets.UTF_8);
-		assertTrue(responseBody.contains("{\"field\":\"categoriaId\",\"error\":\"O campo categoriaId é obrigatório.\"}"));			
+		assertTrue(responseBody.contains("O campo categoriaId é obrigatório."));			
 	}
 	
 }

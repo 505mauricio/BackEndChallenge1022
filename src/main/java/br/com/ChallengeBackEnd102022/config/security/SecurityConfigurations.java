@@ -8,7 +8,6 @@ import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -53,26 +52,23 @@ public class SecurityConfigurations  {
 	@Bean
 	public WebSecurityCustomizer webSecurityCustomizer() {
 	    return(web) -> web.ignoring()
-	    	      .antMatchers("/**.html", "/v2/api-docs", "/webjars/**", "/configuration/**", "/swagger-resources/**","/auth");
+	    	      .antMatchers("/**.html", "/v2/api-docs", "/webjars/**", "/configuration/**", "/swagger-resources/**","/auth","/error","/videos/free","/h2-console/**","/signup");
 	}
 	
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-	    http.csrf()
-	      .disable()
-	      .authorizeRequests()
-	      .antMatchers(HttpMethod.GET, "/error").permitAll()
-	      .and()
-	      .authorizeRequests()
-	      .antMatchers(HttpMethod.POST, "/auth").permitAll()
-	      .anyRequest().authenticated()
-	      .and()
-	      .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-	      .and().addFilterBefore(new AuthFilter(tokenService, userRepository,handlerExceptionResolver), UsernamePasswordAuthenticationFilter.class)
+	    http.csrf().disable()
+	    	.authorizeHttpRequests()
+	    	.mvcMatchers("/signup").permitAll()
+	    	.anyRequest().authenticated()
+	    	.and()	           
+	    	.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+	    	.and().addFilterBefore(new AuthFilter(tokenService, userRepository,handlerExceptionResolver), UsernamePasswordAuthenticationFilter.class)
          ;
 
 	    return http.build();
 	}
+	
 	
 	
 	

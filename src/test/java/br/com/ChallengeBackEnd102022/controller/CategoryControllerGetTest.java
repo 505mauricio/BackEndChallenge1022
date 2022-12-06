@@ -1,9 +1,12 @@
 package br.com.ChallengeBackEnd102022.controller;
 
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.net.URI;
-
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,8 +29,8 @@ import br.com.ChallengeBackEnd102022.model.Video;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
-@AutoConfigureMockMvc(addFilters = false)
 @ActiveProfiles("test")
+@AutoConfigureMockMvc(addFilters = false)
 public class CategoryControllerGetTest {
 
 	@Autowired
@@ -38,7 +41,7 @@ public class CategoryControllerGetTest {
 	
 	
 	@Test
-	public void getAllCategories() throws Exception {
+	public void getCategories() throws Exception {
 		URI uri = new URI("/categorias");
 		
 		MvcResult mvcResult = mockMvc
@@ -51,8 +54,19 @@ public class CategoryControllerGetTest {
 		.andReturn();
 		
 		String responseBody = mvcResult.getResponse().getContentAsString();
-		Category[] categories = objectMapper.readValue(responseBody, Category[].class);
-		assertEquals(12, categories.length);
+		Pattern pattern = Pattern.compile("\\[(.*)\\]");
+		Matcher matcher = pattern.matcher(responseBody);
+		
+		
+		if(matcher.find(0)) {
+			Category[] categories = objectMapper.readValue(matcher.group(0), Category[].class);
+			assertEquals(5, categories.length);
+		}
+		else {
+			fail();
+		}
+		
+		
 	}
 	
 	

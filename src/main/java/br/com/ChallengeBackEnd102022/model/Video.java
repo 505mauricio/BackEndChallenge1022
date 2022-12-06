@@ -2,6 +2,7 @@ package br.com.ChallengeBackEnd102022.model;
 
 import java.util.Objects;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -15,6 +16,7 @@ public class Video {
 	private Long id;
 	private String titulo;
 	private String descricao;
+	@Column(name = "resource_locator")
 	private String url;
 	
 	@ManyToOne

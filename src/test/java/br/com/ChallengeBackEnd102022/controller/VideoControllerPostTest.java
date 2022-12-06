@@ -100,8 +100,8 @@ public class VideoControllerPostTest {
 		.andReturn();
 
 		String responseBody = mvcResult.getResponse().getContentAsString(StandardCharsets.UTF_8);
-		assertTrue(responseBody.contains("{\"field\":\"titulo\",\"error\":\"O campo titulo é obrigatório.\"}"));
-		assertTrue(responseBody.contains("{\"field\":\"titulo\",\"error\":\"O campo titulo deve ter no mínimo 5 caracteres.\"}"));		
+		assertTrue(responseBody.contains("O campo titulo é obrigatório."));
+		assertTrue(responseBody.contains("O campo titulo deve ter no mínimo 5 caracteres."));		
 	}
 	
 	
@@ -127,8 +127,8 @@ public class VideoControllerPostTest {
 		.andReturn();
 
 		String responseBody = mvcResult.getResponse().getContentAsString(StandardCharsets.UTF_8);
-		assertTrue(responseBody.contains("{\"field\":\"descricao\",\"error\":\"O campo descrição deve ter no mínimo 10 caracteres.\"}"));
-		assertTrue(responseBody.contains("{\"field\":\"descricao\",\"error\":\"O campo descrição é obrigatório.\"}"));
+		assertTrue(responseBody.contains("O campo descrição deve ter no mínimo 10 caracteres."));
+		assertTrue(responseBody.contains("O campo descrição é obrigatório."));
 	}
 	
 	@Test
@@ -153,8 +153,8 @@ public class VideoControllerPostTest {
 		.andReturn();
 
 		String responseBody = mvcResult.getResponse().getContentAsString(StandardCharsets.UTF_8);
-		assertTrue(responseBody.contains("{\"field\":\"url\",\"error\":\"O campo url é obrigatório.\"}"));
-		assertTrue(responseBody.contains("{\"field\":\"url\",\"error\":\"O campo url deve ter no mínimo 5 caracteres.\"}"));
+		assertTrue(responseBody.contains("O campo url é obrigatório."));
+		assertTrue(responseBody.contains("O campo url deve ter no mínimo 5 caracteres."));
 	}
 	
 	@Test
@@ -179,7 +179,7 @@ public class VideoControllerPostTest {
 		.andReturn();
 
 		String responseBody = mvcResult.getResponse().getContentAsString(StandardCharsets.UTF_8);
-		assertTrue(responseBody.contains("{\"field\":\"categoriaId\",\"error\":\"O campo categoriaId é obrigatório.\"}"));
+		assertTrue(responseBody.contains("O campo categoriaId é obrigatório."));
 		}
 	
 }

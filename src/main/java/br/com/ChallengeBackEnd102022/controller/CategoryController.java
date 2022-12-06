@@ -6,6 +6,10 @@ import java.util.Optional;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -34,9 +38,9 @@ public class CategoryController {
 	VideoRepository videoRepository;
 	
 	@GetMapping
-	public List<Category> get(){
+	public Page<Category> get(@PageableDefault(sort = "titulo", direction = Direction.DESC, page = 0, size = 5) Pageable page){
 		
-		return categoryRepository.findAll();
+		return categoryRepository.findAll(page);
 	}
 	
 	@GetMapping("/{id}")

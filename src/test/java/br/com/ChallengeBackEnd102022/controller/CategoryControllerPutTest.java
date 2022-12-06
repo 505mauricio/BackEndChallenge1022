@@ -25,6 +25,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import br.com.ChallengeBackEnd102022.model.Category;
 
+
+
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
 @AutoConfigureMockMvc(addFilters = false)
@@ -79,7 +81,7 @@ public class CategoryControllerPutTest {
 		.andReturn();
 
 		String responseBody = mvcResult.getResponse().getContentAsString(StandardCharsets.UTF_8);
-		assertTrue(responseBody.contains("{\"field\":\"titulo\",\"error\":\"O campo titulo é obrigatório.\"}"));
+		assertTrue(responseBody.contains("O campo titulo é obrigatório."));
 			
 	}
 	
@@ -100,8 +102,8 @@ public class CategoryControllerPutTest {
 		.andReturn();
 
 		String responseBody = mvcResult.getResponse().getContentAsString(StandardCharsets.UTF_8);
-		assertTrue(responseBody.contains("{\"field\":\"cor\",\"error\":\"O campo cor deve ter estar no formato hexadecimal.\"}"));
-		assertTrue(responseBody.contains("{\"field\":\"cor\",\"error\":\"O campo cor é obrigatório.\"}"));
+		assertTrue(responseBody.contains("O campo cor deve ter estar no formato hexadecimal."));
+		assertTrue(responseBody.contains("O campo cor é obrigatório."));
 			
 	}
 	

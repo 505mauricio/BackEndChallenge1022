@@ -2,6 +2,7 @@ package br.com.ChallengeBackEnd102022.model;
 
 import java.util.Collection;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -16,10 +17,21 @@ import org.springframework.security.core.userdetails.UserDetails;
 @Table(name="users")
 public class User implements UserDetails{
 
+
 	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+	@Column(name = "log",unique = true)
 	private String login;
+	@Column(name = "pass")
 	private String password;
+	
+	
+	public User(String login, String password) {
+		this.login = login;
+		this.password = password;
+	}
+	
+	public User() {};
 	
 	
 	public Long getId() {
@@ -37,7 +49,7 @@ public class User implements UserDetails{
 	public String getPassword() {
 		return this.password;
 	}
-	public void setPassword(String password) {
+	public void setPassword(String password) {		
 		this.password = password;
 	}
 	@Override

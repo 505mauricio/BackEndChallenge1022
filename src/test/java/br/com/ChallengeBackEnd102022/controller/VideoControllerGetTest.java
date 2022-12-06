@@ -1,9 +1,12 @@
 package br.com.ChallengeBackEnd102022.controller;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -54,8 +57,16 @@ public class VideoControllerGetTest {
 		.andReturn();
 
 		String responseBody = mvcResult.getResponse().getContentAsString();
-		Video[] videos = objectMapper.readValue(responseBody, Video[].class);
-		assertEquals(4, videos.length);
+		Pattern pattern = Pattern.compile("\\[(.*)\\]");
+		Matcher matcher = pattern.matcher(responseBody);
+		
+		if(matcher.find(0)) {
+			Video[] videos = objectMapper.readValue(matcher.group(0), Video[].class);
+			assertEquals(4, videos.length);
+		}
+		else {
+			fail();
+		}
 	}
 	
 	@Test
@@ -71,9 +82,18 @@ public class VideoControllerGetTest {
 				.is(200))
 		.andReturn();
 
-		String responseBody = mvcResult.getResponse().getContentAsString();
-		Video[] videos = objectMapper.readValue(responseBody, Video[].class);
-		assertEquals(1, videos.length);
+		String responseBody = mvcResult.getResponse().getContentAsString();		
+		Pattern pattern = Pattern.compile("\\[(.*)\\]");
+		Matcher matcher = pattern.matcher(responseBody);
+		
+		if(matcher.find(0)) {
+			Video[] videos = objectMapper.readValue(matcher.group(0), Video[].class);
+			assertEquals(1, videos.length);
+		}
+		else {
+			fail();
+		}
+		
 	}
 	
 	
@@ -130,12 +150,24 @@ public class VideoControllerGetTest {
 		.andReturn();
 
 		String responseBody = mvcResult.getResponse().getContentAsString(StandardCharsets.UTF_8);
-		VideoForm[] videoForm = objectMapper.readValue(responseBody, VideoForm[].class);
-		Video video = videoForm[0].toVideo(categoryRepository);
-		Category category = new Category("FREE","");
-		category.setId(1l);
-		Video expectedVideo = new Video("Dad Battle - Friday Night Funkin OST",
-				"Composed by Kawai Sprite: https://twitter.com/kawaisprite From the game Friday Night Funkin Play the game on Newgrounds!","https://www.youtube.com/watch?v=w0WyKTSuX4U",category);	
-		assertEquals(expectedVideo,video);
+		
+		Pattern pattern = Pattern.compile("\\[(.*)\\]");
+		Matcher matcher = pattern.matcher(responseBody);
+		
+		if(matcher.find(0)) {
+			VideoForm[] videoForm = objectMapper.readValue(matcher.group(0), VideoForm[].class);
+			Video video = videoForm[0].toVideo(categoryRepository);
+			Category category = new Category("FREE","");
+			category.setId(1l);
+			Video expectedVideo = new Video("Dad Battle - Friday Night Funkin OST",
+					"Composed by Kawai Sprite: https://twitter.com/kawaisprite From the game Friday Night Funkin Play the game on Newgrounds!","https://www.youtube.com/watch?v=w0WyKTSuX4U",category);	
+			assertEquals(expectedVideo,video);
+		}
+		else {
+			fail();
+		}
+	
+		
+		
 	}
 }

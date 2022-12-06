@@ -1,6 +1,9 @@
 package br.com.ChallengeBackEnd102022.form;
 
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
+import br.com.ChallengeBackEnd102022.model.User;
 
 public class LoginForm {
 
@@ -26,5 +29,10 @@ public class LoginForm {
 	public UsernamePasswordAuthenticationToken convert() {
 		return new UsernamePasswordAuthenticationToken(login, password);
 	}
+
+	public User toUser() {
+		return new User(this.login, new BCryptPasswordEncoder().encode(this.password));
+	}
+	
 
 }

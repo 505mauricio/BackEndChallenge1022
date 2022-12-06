@@ -1,6 +1,5 @@
 package br.com.ChallengeBackEnd102022.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -8,6 +7,12 @@ import java.util.stream.Collectors;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -29,7 +34,13 @@ import br.com.ChallengeBackEnd102022.repository.VideoRepository;
 @RequestMapping("/videos")
 public class VideoController {
 
-	public record videoDto(Long id, Long categoriaId, String titulo, String descricao, String url) {}
+	public record videoDto(Long id, Long categoriaId, String titulo, String descricao, String url) {
+		
+		 videoDto(Video video) {
+			this(video.getId(),video.getCategoria().getId(),video.getTitulo(),video.getDescricao(),video.getUrl());
+
+		}
+	}
 	
 	@Autowired
 	VideoRepository videoRepository;
@@ -38,20 +49,27 @@ public class VideoController {
 	CategoryRepository categoryRepository;
 	
 	@GetMapping
-	public List<videoDto> get(@RequestParam(required = false) String search){
-		List<Video> videos = new ArrayList<Video>();
+	public Page<videoDto> get(@RequestParam(required = false) String search, @PageableDefault(sort = "titulo", direction = Direction.DESC, page = 0, size = 5) Pageable page){
 		if (search==null){
-			 videos = videoRepository.findAll();
+			Page<Video> videos = videoRepository.findAll(page);
+			 Page<videoDto> videosDto = videos.map(videoDto::new);
+			 return videosDto;
+			 
 
 		}
 		else {
-			videos = videoRepository.findByTituloContaining(search);
-		}
-		List<videoDto> videosDto = videos.stream()
+			Page<Video> videos = videoRepository.findByTituloContaining(search,page);
+			Page<videoDto> videosDto = videos.map(videoDto::new);
+			return videosDto;
+		}      
+	}
+	
+	@GetMapping("/free")
+	public List<videoDto> getFree(){
+		Page<Video> videos = videoRepository.findAll(PageRequest.of(0, 3, Sort.by(Sort.Order.asc("id"))));
+		return videos.stream()
                 .map(v -> new videoDto(v.getId(),v.getCategoria().getId(),v.getTitulo(),v.getDescricao(),v.getUrl()))
                 .collect(Collectors.toList());
-			return videosDto;
-       
 	}
 	
 	@GetMapping("/{id}")

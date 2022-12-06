@@ -15,8 +15,8 @@ services:
       - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
   challengebackend:
     build: . 
-    depends_on:
-      - db
+    restart: 
+        on-failure:10
     ports:
       - "8081:8081"
     environment:
@@ -25,6 +25,8 @@ services:
       - SERVER_PORT=8081
       - DATABASE_URL=jdbc:mysql://db:3306/challengebackend?autoReconnect=true
       - "SPRING_PROFILES_ACTIVE=prod"
+    env_file:
+      - .env 
 volumes:
   db:
     driver: local

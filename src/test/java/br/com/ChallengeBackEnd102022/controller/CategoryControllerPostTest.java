@@ -77,7 +77,7 @@ public class CategoryControllerPostTest {
 		.andReturn();
 
 		String responseBody = mvcResult.getResponse().getContentAsString(StandardCharsets.UTF_8);
-		assertEquals("[{\"field\":\"titulo\",\"error\":\"O campo titulo é obrigatório.\"}]",responseBody);
+		assertEquals("[\"O campo titulo é obrigatório.\"]",responseBody);
 		
 		
 	}
@@ -99,8 +99,8 @@ public class CategoryControllerPostTest {
 		.andReturn();
 
 		String responseBody = mvcResult.getResponse().getContentAsString(StandardCharsets.UTF_8);
-		assertTrue(responseBody.contains("{\"field\":\"cor\",\"error\":\"O campo cor deve ter estar no formato hexadecimal.\"}"));
-		assertTrue(responseBody.contains("{\"field\":\"cor\",\"error\":\"O campo cor é obrigatório.\"}"));
+		assertTrue(responseBody.contains("O campo cor deve ter estar no formato hexadecimal."));
+		assertTrue(responseBody.contains("O campo cor é obrigatório"));
 			
 	}
 	
